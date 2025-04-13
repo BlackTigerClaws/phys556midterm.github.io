@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <title>Problem 2: Geiger-Nuttal law</title>
+        <script src="https://www.desmos.com/api/v1.10/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+        <h1>Problem 2: Geiger-Nuttal Law</h1>
+    </head>
+    <body>
+        <table id="isotopes">
+            <thead>
+                <th>Element</th>
+            </thead>
+        </table>
+        <div id="calculator" style="width: 600px; height: 400px;"></div>
+        <p/><p/><p/><p/>
+        Credit to Goodman Sciences on GitHub for the <code>.csv</code> file for translating symbols to chemical names:
+        <a href="https://gist.github.com/GoodmanSciences/c2dd862cd38f21b0ad36b8f96b4bf1ee">https://gist.github.com/GoodmanSciences/c2dd862cd38f21b0ad36b8f96b4bf1ee</a>
+        <script>
+            function alphaEmitter(nuclide) {
+                elem = {};
+                if ( nuclide.hasOwnProperty('levels') && nuclide.hasOwnProperty('alpha') ) {
+                    levels = nuclide['levels'];
+                    if ( levels.hasOwnProperty('halflife') && levels.hasOwnProperty('decayModes') ) {
+                        elem['name']     = nuclide['name'];
+                        halflife         = nuclide['levels'][0]['halflife'];
+                        decayMode             = nuclide['decayModes'].find( a => a['mode'] === 'A' );
+                        elem['halflife'] = ( halflife['unit'] === 's' ? halflife['value'] :
+                                             halflife['unit'] === 'm' ? halflife['value'] * 60 :
+                                             halflife['unit'] === 'h' ? halflife['value'] * 3600 :
+                                             halflife['unit'] === 'd' ? halflife['value'] * 86400 :
+                                             halflife['unit'] === 'y' ? halflife['value'] * 31536000 :
+                                             halflife['unit'] === 'ms' ? halflife['value'] / 1000 :
+                                             halflife['unit'] === 'us' ? halflife['value'] / 1000000 :
+                                             halflife['unit'] === 'ns' ? halflife['value'] / 1000000000 :
+                                             undefined ) * 100 / decayMode['value'];
+                        elem['energy']   = nuclide.alpha['unit'] === 'keV' ? nuclide.alpha['value'] :
+                                           nuclide.alpha['unit'] === 'MeV' ? nuclide.alpha['value'] * 1000 :
+                                           undefined;
+                        if ( elem['halflife'] === undefined || elem['energy'] === undefined )
+                            return undefined;
+                    } else
+                        return undefined;
+                } else
+                    return undefined;
+                return elem;
+            }
+            async function getNuclides( filename ) {
+                let allNuclides = fetch(filename).then(response => response.json());
+                return allNuclides.filter( nuclide => nuclide['z'] > 110 );
+            }
+            let nuclides   = getNuclides("./nndc_nudat_export.json");
+            alphaEmiters   = nuclides.map(alphaEmitter).filter( (el) => !(el === undefined) );
+            let calculator = Desmos.GraphingCalculator(document.getElementById('calculator'));
+        </script>
+    </body>
+</html>
