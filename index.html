@@ -17,11 +17,11 @@
         <a href="https://gist.github.com/GoodmanSciences/c2dd862cd38f21b0ad36b8f96b4bf1ee">https://gist.github.com/GoodmanSciences/c2dd862cd38f21b0ad36b8f96b4bf1ee</a>
         <script>
             function objFilter(obj, pred) {
-                const arr = obj.entries().filter( ent => pred(ent[1]) );
+                const arr = Object.entries(obj).filter( ent => pred(ent[1]) );
                 return arr.map( elt => elt[1] );
             }
             function objMap(obj, mapper) {
-                const arr = obj.entries().map( ent => [ ent[0], mapper(ent[1]) ] );
+                const arr = Object.entries(obj).map( ent => [ ent[0], mapper(ent[1]) ] );
                 return arr.map( elt => elt[1] );
             }
             
