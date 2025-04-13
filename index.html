@@ -51,9 +51,9 @@
                 try {
                     const allNuclides   = await fetch(filename,{'mode':'no-cors'});
                     const allNuclidesJS = await allNuclides.json();
-                    return allNuclides.filter( nuclide => nuclide['z'] > 110 );
+                    return await allNuclides.filter( nuclide => nuclide['z'] > 110 );
                 } catch (error) {
-                    console.log('error');
+                    console.log(error);
                     return undefined;
                 }
             }
