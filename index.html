@@ -12,7 +12,7 @@
             <option>Problem 3: Fermi Decay</option>
         </select>
         <div id="calculator" style="width: 600px; height: 400px;"></div>
-        Credit to <a href="https://github.com/GoodmanSciences">Goodman Sciences</a> on GitHub for the <code>.csv</code> file for translating symbols to chemical names:
+        Credit to <a href="https://github.com/GoodmanSciences">Goodman Sciences</a> on GitHub for the <code>.csv</code> file of element names and symbols:
         <a href="https://gist.github.com/GoodmanSciences/c2dd862cd38f21b0ad36b8f96b4bf1ee">https://gist.github.com/GoodmanSciences/c2dd862cd38f21b0ad36b8f96b4bf1ee</a>
         <script>
             // Problem 1
@@ -47,8 +47,8 @@
                 return elem;
             }
             async function getNuclides( filename ) {
-                let allNuclides = fetch(filename).then(response => response.json());
-                return allNuclides.filter( nuclide => nuclide['z'] > 110 );
+                let allNuclides = fetch(filename).then( response => response.json() );
+                return allNuclides.then( value => value.filter( nuclide => nuclide['z'] > 110 ) );
             }
             let nuclides   = getNuclides("./nndc_nudat_export.json");
             console.log(typeof nuclides);
