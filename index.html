@@ -57,7 +57,7 @@
                     return undefined;
                 }
             }
-            let nuclides = getNuclides("https://github.com/BlackTigerClaws/phys556midterm.github.io/blob/f6dda05a459b28fe3cbce8cc5f7dee48e7d433c9/nndc_nudat_data_export.json");
+            let nuclides = getNuclides("https://raw.githubusercontent.com/BlackTigerClaws/phys556midterm.github.io/f6dda05a459b28fe3cbce8cc5f7dee48e7d433c9/nndc_nudat_data_export.json");
             console.log("nuclides:" + typeof nuclides);
             alphaEmiters = nuclides.map(alphaEmitter).filter( (el) => !(el === undefined) );
 
