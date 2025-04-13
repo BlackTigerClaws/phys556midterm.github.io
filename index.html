@@ -48,10 +48,11 @@
             }
             async function getNuclides( filename ) {
                 let allNuclides = fetch(filename).then( response => response.json() );
+                console.log("allNuclides: " + typeof allNuclides);
                 return allNuclides.then( value => value.filter( nuclide => nuclide['z'] > 110 ) );
             }
             let nuclides   = getNuclides("./nndc_nudat_export.json");
-            console.log(typeof nuclides);
+            console.log("nuclides:" + typeof nuclides);
             alphaEmiters   = nuclides.map(alphaEmitter).filter( (el) => !(el === undefined) );
 
             // Problem 3
