@@ -50,6 +50,8 @@
             async function getNuclides( filename ) {
                 try {
                     const allNuclides   = await fetch(filename,{'mode':'no-cors'});
+                    if (allNuclides.ok)
+                        console.log("we gucci");
                     const allNuclidesJS = await allNuclides.json();
                     return await allNuclides.filter( nuclide => nuclide['z'] > 110 );
                 } catch (error) {
