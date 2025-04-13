@@ -18,7 +18,11 @@
         <script>
             function objFilter(obj, pred) {
                 const arr = obj.entries().filter( ent => pred(ent[1]) );
-                return arr.map( [k,v] => v );
+                return arr.map( elt => elt[1] );
+            }
+            function objMap(obj, mapper) {
+                const arr = obj.entries().map( ent => [ ent[0], mapper(ent[1]) ] );
+                return arr.map( elt => elt[1] );
             }
             
             // Problem 1
@@ -66,9 +70,8 @@
                     return undefined;
                 }
             }
-            const nuclides = await getNuclides("https://raw.githubusercontent.com/BlackTigerClaws/phys556midterm.github.io/f6dda05a459b28fe3cbce8cc5f7dee48e7d433c9/nndc_nudat_data_export.json");
-            console.log("nuclides:" + typeof nuclides);
-            alphaEmiters = nuclides.then().map(alphaEmitter).filter( (el) => !(el === undefined) );
+            const nuclides = getNuclides("https://raw.githubusercontent.com/BlackTigerClaws/phys556midterm.github.io/f6dda05a459b28fe3cbce8cc5f7dee48e7d433c9/nndc_nudat_data_export.json");
+            alphaEmiters = objFilter( objMap(nuclides, alphaEmitter), el => !(el === undefined) );
 
             // Problem 3
 
