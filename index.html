@@ -51,6 +51,7 @@
                 return allNuclides.filter( nuclide => nuclide['z'] > 110 );
             }
             let nuclides   = getNuclides("./nndc_nudat_export.json");
+            console.log(typeof nuclides);
             alphaEmiters   = nuclides.map(alphaEmitter).filter( (el) => !(el === undefined) );
 
             // Problem 3
