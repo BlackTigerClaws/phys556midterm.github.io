@@ -73,10 +73,13 @@
             const nuclides = getNuclides("https://raw.githubusercontent.com/BlackTigerClaws/phys556midterm.github.io/f6dda05a459b28fe3cbce8cc5f7dee48e7d433c9/nndc_nudat_data_export.json");
             alphaEmiters = objFilter( objMap(nuclides, alphaEmitter), el => !(el === undefined) );
 
+            
+
             // Problem 3
 
             // Page setup
-            const calculator = Desmos.GraphingCalculator(document.getElementById('calculator'));
+            const calculator = Desmos.GraphingCalculator(document.getElementById('calculator'),
+                                                        {border: false, allowUndo: false, zoomButtons: false, keypad: false, administerSecretFolders: false, xAxisLabel: 'E', yAxisLabel: '\\log t_{1/2}'});
         </script>
     </body>
 </html>
