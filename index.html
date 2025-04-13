@@ -59,10 +59,6 @@
             async function getNuclides( filename ) {
                 try {
                     const allNuclides   = await fetch(filename);
-                    if (allNuclides.ok)
-                        console.log("we gucci");
-                    else
-                        console.lot("definitiely NOT gucci");
                     const allNuclidesJS = await allNuclides.json();
                     return await objFilter(allNuclidesJS,nuclide => nuclide['z'] > 110);
                 } catch (error) {
@@ -73,7 +69,7 @@
             const nuclides = getNuclides("https://raw.githubusercontent.com/BlackTigerClaws/phys556midterm.github.io/f6dda05a459b28fe3cbce8cc5f7dee48e7d433c9/nndc_nudat_data_export.json");
             alphaEmiters = objFilter( objMap(nuclides, alphaEmitter), el => !(el === undefined) );
 
-            
+            console.log('we made it!');
 
             // Problem 3
 
