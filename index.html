@@ -52,6 +52,8 @@
                     const allNuclides   = await fetch(filename,{'mode':'no-cors'});
                     if (allNuclides.ok)
                         console.log("we gucci");
+                    else
+                        console.lot("definitiely NOT gucci");
                     const allNuclidesJS = await allNuclides.json();
                     return await allNuclides.filter( nuclide => nuclide['z'] > 110 );
                 } catch (error) {
