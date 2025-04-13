@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>PHYS556 Midterm Exam (Jordan Drake)</title>
@@ -25,7 +26,7 @@
                     if ( levels.hasOwnProperty('halflife') && levels.hasOwnProperty('decayModes') ) {
                         elem['name']     = nuclide['name'];
                         halflife         = nuclide['levels'][0]['halflife'];
-                        decayMode             = nuclide['decayModes'].find( a => a['mode'] === 'A' );
+                        decayMode        = nuclide['decayModes'].find( a => a['mode'] === 'A' );
                         elem['halflife'] = ( halflife['unit'] === 's' ? halflife['value'] :
                                              halflife['unit'] === 'm' ? halflife['value'] * 60 :
                                              halflife['unit'] === 'h' ? halflife['value'] * 3600 :
@@ -47,13 +48,16 @@
                 return elem;
             }
             async function getNuclides( filename ) {
-                let allNuclides = fetch(filename).then( response => response.json() );
-                console.log("allNuclides: " + typeof allNuclides);
-                return allNuclides.then( value => value.filter( nuclide => nuclide['z'] > 110 ) );
+                try {
+                    let allNuclides = await fetch(filename).json();
+                    return allNuclides.filter( nuclide => nuclide['z'] > 110 );
+                } catch (error) {
+                    return undefined;
+                }
             }
-            let nuclides   = getNuclides("./nndc_nudat_export.json");
+            let nuclides = getNuclides("./nndc_nudat_export.json");
             console.log("nuclides:" + typeof nuclides);
-            alphaEmiters   = nuclides.map(alphaEmitter).filter( (el) => !(el === undefined) );
+            alphaEmiters = nuclides.map(alphaEmitter).filter( (el) => !(el === undefined) );
 
             // Problem 3
 
