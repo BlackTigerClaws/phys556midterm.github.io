@@ -49,9 +49,11 @@
             }
             async function getNuclides( filename ) {
                 try {
-                    let allNuclides = await fetch(filename).json();
+                    const allNuclides   = await fetch(filename);
+                    const allNuclidesJS = await allNuclides.json();
                     return allNuclides.filter( nuclide => nuclide['z'] > 110 );
                 } catch (error) {
+                    console.log('error');
                     return undefined;
                 }
             }
