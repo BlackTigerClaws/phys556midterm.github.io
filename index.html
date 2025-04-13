@@ -49,7 +49,7 @@
             }
             async function getNuclides( filename ) {
                 try {
-                    const allNuclides   = await fetch(filename);
+                    const allNuclides   = await fetch(filename,{'mode':'no-cors'});
                     const allNuclidesJS = await allNuclides.json();
                     return allNuclides.filter( nuclide => nuclide['z'] > 110 );
                 } catch (error) {
