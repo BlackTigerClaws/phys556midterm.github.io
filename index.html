@@ -41,7 +41,7 @@
             // Page setup
             const calculator = Desmos.GraphingCalculator(document.getElementById('calculator'),
                                                          {border: false, allowUndo: false, zoomButtons: false, keypad: false, authoFeatures: false, xAxisLabel: 'E', yAxisLabel: 'T', yAxisScale: 'logarithmic'});
-            calculator.setExpression({id: 'hiddenFolder', type: 'folder', secret: true});
+            calculator.setExpression({id: 'hiddenFolder', type: 'folder', secret: true, hidden: true});
             
             let elements = {};
 
@@ -114,6 +114,7 @@
                                       .reduce( nuc => '<option value="' + nuc[1] + '" onclick="update(\'' + nuc[1] + '\',\'none\')>(Z=' + nuc[0] + ') ' + nuc[1] + '</option>',init);
                 document.getElementById('problem2').innerHTML = table;
                 document.getElementById('problem2').style.display = 'inline';
+                console.log("hi");
             }
 
             function showAll(alphaEmitters) {
