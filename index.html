@@ -110,7 +110,7 @@
             
             function showAlphaEmitters(alphaEmitters) {
                 const init  = '<option onClick=>Show all nuclei (Z>110)</option>';
-                const table = elements.filter( elt => elt[0] > 110 )
+                const table = elements.filter( elt => Number(elt[0]) > 110 )
                                       .reduce( nuc => '<option value="' + nuc[1] + '" onclick="update(\'' + nuc[1] + '\',\'none\')>(Z=' + nuc[0] + ') ' + nuc[1] + '</option>',init);
                 document.getElementById('problem2').innerHTML = table;
                 document.getElementById('problem2').style.display = 'inline';
