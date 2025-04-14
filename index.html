@@ -8,14 +8,43 @@
         <h1>PHYS556 Midterm Exam: Jordan Drake</h1>
         <select>
             <option>--select problem--</option>
-            <option>Problem 1: Shell Effects</option>
-            <option>Problem 2: Geiger-Nuttal Law</option>
-            <option>Problem 3: Fermi Decay</option>
+            <option value="problem1" onClick="showProblem1()">Problem 1: Shell Effects</option>
+            <option value="problem2" onClick="showProblem2()">Problem 2: Geiger-Nuttal Law</option>
+            <option value="problem3" onClick="showProblem3()">Problem 3: Fermi Decay</option>
         </select>
-        <div id="calculator" style="width: 600px; height: 400px;"></div>
+        <table>
+            <tr>
+                <td>
+                    <table id="problem1" style="display: none;">
+                        <tr>
+                            <td>N: &emsp; </td><td><input type="number"></input></td>
+                        </tr>
+                        <tr>
+                            <td>Z: &emsp; </td><td><input type="number"></input></td>
+                        </tr>
+                        <tr>
+                            <td>A: &emsp; </td><td><input type="number"></input></td>
+                        </tr>
+                    </table>
+                    <select id="problem2" style="display: none;">
+                    </select>
+                </td>
+                <td>
+                    <div id="calculator" style="width: 600px; height: 400px;"></div>
+                </td>
+            </tr>
+        </table>
         Credit to <a href="https://github.com/GoodmanSciences">Goodman Sciences</a> on GitHub for the <code>.csv</code> file of element names and symbols:
         <a href="https://gist.github.com/GoodmanSciences/c2dd862cd38f21b0ad36b8f96b4bf1ee">https://gist.github.com/GoodmanSciences/c2dd862cd38f21b0ad36b8f96b4bf1ee</a>
         <script>
+            // Page setup
+            const calculator = Desmos.GraphingCalculator(document.getElementById('calculator'),
+                                                         {border: false, allowUndo: false, zoomButtons: false, keypad: false, administerSecretFolders: false, xAxisLabel: 'E', yAxisLabel: 'T', yAxisScale: 'logarithmic'});
+            calculator.setExpression({id: 'hiddenFolder', type: 'folder', secret: true});
+            
+            let elements = {};
+
+            // Helper functions for objects
             function objFilter(obj, pred) {
                 const arr = Object.entries(obj).filter( ent => pred(ent[1]) );
                 return arr.map( elt => elt[1] );
@@ -66,16 +95,66 @@
                     return undefined;
                 }
             }
-            const nuclides = getNuclides("https://raw.githubusercontent.com/BlackTigerClaws/phys556midterm.github.io/f6dda05a459b28fe3cbce8cc5f7dee48e7d433c9/nndc_nudat_data_export.json");
-            alphaEmiters = objFilter( objMap(nuclides, alphaEmitter), el => !(el === undefined) );
+            async function getElements( filename ) {
+                try {
+                    const elementsFile = await fetch(filename);
+                    const elementsTxt  = ( await elements.text() ).split('\n');
+                    elementsTxt.shift();
+                    return elementsTxt.map( line => line.split(',').slice(0,3) );
+                } catch (error) {
+                    console.log(error);
+                    return undefined;
+                }
+            }
+            
+            function showAlphaEmitters(alphaEmitters) {
+                const init  = '<option onClick=>Show all nuclei (Z>110)</option>';
+                const table = elements.filter( elt => elt[0] > 110 )
+                                      .reduce( nuc => '<option value="' + nuc[1] + '" onclick="update(\'' + nuc[1] + '\',\'none\')>(Z=' + nuc[0] + ') ' + nuc[1] + '</option>',init);
+                document.getElementById('problem2').innerHTML = table;
+                document.getElementById('problem2').style.display = 'inline';
+            }
 
-            console.log('we made it!');
+            function showAll(alphaEmitters) {
+                alphaEmmitters.forEach( nuc => update(nuc[1],'hiddenFolder');
+            }
+
+            function update(element, folder) {
+                const entry = elements.find( elt => elt[1] === element );
+                const nucs  = alphaEmitters.filter( nuc => nuc['z'] == entry[0] );
+                const es    = nucs.map( nuc => nuc['energy'] );
+                const ts    = nucs.map( nuc => nuc['halflife'] );
+                const expr  = {
+            		id:         (element + 'Table'),
+                    folderId:   folder,
+            		type:       'table',
+            		points:     true,
+            		columns:    [
+            			{latex: 'E',       values: es  },
+            			{latex: 't_{1/2}', values: ts }
+            		],
+                    columnMode: Desmos.ColumnModes.POINTS_AND_LINES
+            	};
+                if ( folder === 'none' )
+                    delete expr[folderId];
+            	calculator.setExpression(expr);
+            	return;
+            }
+
+            function showProblem2() {
+                document.getElementById('problem1').style.display = 'none';
+                document.getElementById('problem2').style.display = 'inline';
+                document.getElementById('problem3').style.display = 'none';
+                const nuclides      = getNuclides("https://raw.githubusercontent.com/BlackTigerClaws/phys556midterm.github.io/f6dda05a459b28fe3cbce8cc5f7dee48e7d433c9/nndc_nudat_data_export.json");
+                elements      = getElements("https://raw.githubusercontent.com/BlackTigerClaws/phys556midterm.github.io/refs/heads/main/Periodic_20Table_20of_20Elements.csv");
+                const alphaEmitters = objFilter( objMap(nuclides, alphaEmitter), el => !(el === undefined) );
+                
+            }
 
             // Problem 3
 
-            // Page setup
-            const calculator = Desmos.GraphingCalculator(document.getElementById('calculator'),
-                                                        {border: false, allowUndo: false, zoomButtons: false, keypad: false, administerSecretFolders: false, xAxisLabel: 'E', yAxisLabel: 'log(t)'});
+            
+            
         </script>
     </body>
 </html>
