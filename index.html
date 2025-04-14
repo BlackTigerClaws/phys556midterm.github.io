@@ -149,8 +149,7 @@
                 document.getElementById('problem2').style.display = 'inline';
                 document.getElementById('problem3').style.display = 'none';
                 const nuclides = getNuclides("https://raw.githubusercontent.com/BlackTigerClaws/phys556midterm.github.io/f6dda05a459b28fe3cbce8cc5f7dee48e7d433c9/nndc_nudat_data_export.json");
-                elements       = getElements("https://raw.githubusercontent.com/BlackTigerClaws/phys556midterm.github.io/refs/heads/main/Periodic_20Table_20of_20Elements.csv");
-                console.log(elements);
+                elements       = await getElements("https://raw.githubusercontent.com/BlackTigerClaws/phys556midterm.github.io/refs/heads/main/Periodic_20Table_20of_20Elements.csv");
                 const alphaEmitters = objFilter( objMap(nuclides, alphaEmitter), el => !(el === undefined) );
                 showAlphaEmitters(alphaEmitters);
             }
