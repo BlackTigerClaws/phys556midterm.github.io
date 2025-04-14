@@ -40,7 +40,7 @@
         <script>
             // Page setup
             const calculator = Desmos.GraphingCalculator(document.getElementById('calculator'),
-                                                         {border: false, allowUndo: false, zoomButtons: false, keypad: false, administerSecretFolders: false, xAxisLabel: 'E', yAxisLabel: 'T', yAxisScale: 'logarithmic'});
+                                                         {border: false, allowUndo: false, zoomButtons: false, keypad: false, authoFeatures: false, xAxisLabel: 'E', yAxisLabel: 'T', yAxisScale: 'logarithmic'});
             calculator.setExpression({id: 'hiddenFolder', type: 'folder', secret: true});
             
             let elements = {};
