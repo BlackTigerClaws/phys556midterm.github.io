@@ -99,7 +99,7 @@
             async function getElements( filename ) {
                 try {
                     const elementsFile = await fetch(filename);
-                    const elementsTxt  = ( await elements.text() ).split('\n');
+                    const elementsTxt  = ( await elementsFile.text() ).split('\n');
                     elementsTxt.shift();
                     return elementsTxt.map( line => line.split(',').slice(0,3) );
                 } catch (error) {
